@@ -1,7 +1,5 @@
-class Tarefa {
-  String descricao;
-  bool concluida;
+class TarefaModel {
+  final String nome;
 
-  // Construtor da classe Tarefa
-  Tarefa(this.descricao, this.concluida);
+  TarefaModel(this.nome);
 }

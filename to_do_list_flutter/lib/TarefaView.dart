@@ -1,74 +1,76 @@
-// Classe que representa a tela principal da lista de tarefas
-import 'package:to_do_list_flutter/TarefaApp.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:to_do_list_flutter/TarefaApp.dart';
 import 'package:to_do_list_flutter/TarefaController.dart';
+import 'package:to_do_list_flutter/TarefaModel.dart';
 
-class ListaTarefasScreen extends StatelessWidget {
-  // Controlador para o campo de texto de nova tarefa
+class TarefaView extends StatefulWidget {
+  @override
+  _TarefaViewState createState() => _TarefaViewState();
+}
+
+class _TarefaViewState extends State<TarefaView> {
+  final controller = TarefaController();
   final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Barra superior do aplicativo
       appBar: AppBar(
-        title: Text('Lista de Tarefas'),
+        title: Text('Lista de Compras'),
       ),
-      // Corpo principal do aplicativo
-      body: Column(
-        children: [
-          // Campo de texto para adicionar nova tarefa
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: 'Nova Tarefa',
-                // Ícone para adicionar tarefa ao pressionar o botão
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    // Chamando o método adicionarTarefa do Provider para atualizar o estado
-                    Provider.of<ListaTarefasController>(context, listen: false)
-                        .adicionarTarefa(_controller.text);
-                    // Limpar o campo de texto após adicionar a tarefa
-                    _controller.clear();
-                  },
-                  icon: Icon(Icons.add),
-                ),
-              ),
-            ),
-          ),
-          // Lista de tarefas usando um Consumer do Provider para atualização automática
-          Expanded(
-            child: Consumer<ListaTarefasController>(
-              builder: (context, model, child) {
-                return ListView.builder(
-                  itemCount: model.tarefas.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      // Exibição do texto da tarefa
-                      title: Text(model.tarefas[index].descricao),
-                      // Checkbox para marcar a tarefa como concluída
-                      trailing: Checkbox(
-                        value: model.tarefas[index].concluida,
-                        onChanged: (value) {
-                          // Chamando o método marcarComoConcluida do Provider para atualizar o estado
-                          model.marcarComoConcluida(index);
-                        },
-                      ),
-                      // Exclui a tarefa ao manter pressionado
-                      onLongPress: () {
-                        // Chamando o método excluirTarefa do Provider para atualizar o estado
-                        model.excluirTarefa(index);
-                      },
-                    );
-                  },
-                );
+      body: ListView.builder(
+        itemCount: controller.listaDeCompras.length,
+        itemBuilder: (context, index) {
+          final item = controller.listaDeCompras[index];
+          return ListTile(
+            title: Text(item.nome),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  controller.removerItem(index);
+                });
               },
             ),
-          ),
-        ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Adicionar Item"),
+                content: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(hintText: "Nome do item"),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        controller.adicionarItem(TarefaModel(_controller.text));
+                        _controller.clear();
+                        Navigator.of(context).pop();
+                      });
+                    },
+                    child: Text("Adicionar"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _controller.clear();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancelar"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        tooltip: 'Adicionar Item',
+        child: Icon(Icons.add),
       ),
     );
   }
