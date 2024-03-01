@@ -6,14 +6,16 @@ import 'Item.dart';
 class ShoppingListView extends StatelessWidget {
   final ShoppingListController controller;
 
-  const ShoppingListView({Key? key, required this.controller})
+  const ShoppingListView(
+      {Key? key, required this.controller, required String selectedCurrency})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Compras'),
+        title: Text(
+            'Lista de Compras - Total: ${controller.calculateTotalPrice().toStringAsFixed(2)} USD'),
         actions: [
           IconButton(
             icon: Icon(Icons.sort_by_alpha),
@@ -35,8 +37,27 @@ class ShoppingListView extends StatelessWidget {
           final item = controller.shoppingList[index];
           return ListTile(
             title: Text(item.name),
-            subtitle:
-                Text('Quantidade: ${item.quantity} - Preço: ${item.price}'),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Quantidade: ${item.quantity}'),
+                Row(
+                  children: [
+                    Text('Preço: '),
+                    Text(
+                      '${item.price.toStringAsFixed(2)} USD',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      '(${controller.convertPrice(item.price, 'BRL').toStringAsFixed(2)} BRL)',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                    // Adicione outras moedas aqui, conforme necessário
+                  ],
+                ),
+              ],
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -50,15 +71,15 @@ class ShoppingListView extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.remove),
                   onPressed: () {
-                    controller.updateItemQuantity(item.name, item.quantity + 1);
+                    controller.decrementItemQuantity(item.name);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.add),
                   onPressed: () {
-                    controller.removeItem(item.name);
+                    controller.incrementItemQuantity(item.name);
                   },
                 ),
               ],
@@ -108,10 +129,12 @@ class ShoppingListView extends StatelessWidget {
                 if (_itemNameController.text.isNotEmpty &&
                     _quantityController.text.isNotEmpty &&
                     _priceController.text.isNotEmpty) {
+                  double price = double.parse(_priceController.text);
                   controller.addItem(
                       _itemNameController.text,
                       int.parse(_quantityController.text),
-                      double.parse(_priceController.text));
+                      price,
+                      'BRL'); // Definindo a moeda como BRL por padrão
                   Navigator.of(context).pop();
                 }
               },
