@@ -5,6 +5,8 @@ import 'Controller.dart';
 import 'View.dart';
 
 class ListaComprasApp extends StatelessWidget {
+  const ListaComprasApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

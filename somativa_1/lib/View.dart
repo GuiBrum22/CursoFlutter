@@ -7,6 +7,8 @@ class ListaComprasScreen extends StatelessWidget {
   // Controlador para o campo de texto de nova tarefa
   final TextEditingController _controller = TextEditingController();
 
+  ListaComprasScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
