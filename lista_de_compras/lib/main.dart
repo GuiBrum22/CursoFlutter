@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ShoppingListController.dart';
 import 'ShoppingListView.dart';
+import 'ShoppingListController.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final ShoppingListController controller = ShoppingListController();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lista de Compras',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ChangeNotifierProvider(
-        create: (context) => controller,
-        child: ShoppingListView(controller: controller),
+    return ChangeNotifierProvider(
+      create: (context) => ShoppingListController(),
+      child: MaterialApp(
+        title: 'Lista de Compras',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Consumer<ShoppingListController>(
+          builder: (context, controller, _) =>
+              ShoppingListView(controller: controller),
+        ),
       ),
     );
   }
