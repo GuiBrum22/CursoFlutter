@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'ShoppingListController.dart';
 import 'Item.dart';
 
 class ShoppingListView extends StatelessWidget {
   final ShoppingListController controller;
+  final String selectedCurrency;
 
-  const ShoppingListView(
-      {Key? key, required this.controller, required String selectedCurrency})
-      : super(key: key);
+  const ShoppingListView({
+    Key? key,
+    required this.controller,
+    required this.selectedCurrency,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Lista de Compras - Total: ${controller.calculateTotalPrice().toStringAsFixed(2)} USD'),
+            'Lista de Compras - Total: ${controller.calculateTotalPrice().toStringAsFixed(2)} $selectedCurrency'),
         actions: [
           IconButton(
             icon: Icon(Icons.sort_by_alpha),
@@ -50,7 +52,7 @@ class ShoppingListView extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '(${controller.convertPrice(item.price, 'BRL').toStringAsFixed(2)} BRL)',
+                      '(${controller.convertPrice(item.price, selectedCurrency).toStringAsFixed(2)} $selectedCurrency)',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                     // Adicione outras moedas aqui, conforme necessário
@@ -64,15 +66,6 @@ class ShoppingListView extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
-                    if (item.quantity > 1) {
-                      controller.updateItemQuantity(
-                          item.name, item.quantity - 1);
-                    }
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
                     controller.decrementItemQuantity(item.name);
                   },
                 ),
@@ -80,6 +73,18 @@ class ShoppingListView extends StatelessWidget {
                   icon: Icon(Icons.add),
                   onPressed: () {
                     controller.incrementItemQuantity(item.name);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    _editItemDialog(context, item);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    controller.removeItem(item.name);
                   },
                 ),
               ],
@@ -134,11 +139,64 @@ class ShoppingListView extends StatelessWidget {
                       _itemNameController.text,
                       int.parse(_quantityController.text),
                       price,
-                      'BRL'); // Definindo a moeda como BRL por padrão
+                      selectedCurrency);
                   Navigator.of(context).pop();
                 }
               },
               child: Text('Adicionar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _editItemDialog(BuildContext context, Item item) {
+    TextEditingController _itemNameController =
+        TextEditingController(text: item.name);
+    TextEditingController _quantityController =
+        TextEditingController(text: item.quantity.toString());
+    TextEditingController _priceController =
+        TextEditingController(text: item.price.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Editar Item"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _itemNameController,
+                decoration: InputDecoration(labelText: 'Nome do item'),
+              ),
+              TextField(
+                controller: _quantityController,
+                decoration: InputDecoration(labelText: 'Quantidade'),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _priceController,
+                decoration: InputDecoration(labelText: 'Preço'),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (_itemNameController.text.isNotEmpty &&
+                    _quantityController.text.isNotEmpty &&
+                    _priceController.text.isNotEmpty) {
+                  double price = double.parse(_priceController.text);
+                  controller.updateItemName(item.name, _itemNameController.text);
+                  controller.updateItemPrice(item.name, price);
+                  controller.updateItemQuantity(item.name, int.parse(_quantityController.text));
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text('Salvar'),
             ),
           ],
         );
