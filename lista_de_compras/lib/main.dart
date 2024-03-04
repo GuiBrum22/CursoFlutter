@@ -4,11 +4,13 @@ import 'ShoppingListView.dart';
 import 'ShoppingListController.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp(selectedCurrency: 'BRL'));
 }
 
 class MyApp extends StatelessWidget {
-  final String selectedCurrency = 'BRL'; // Alterando a moeda selecionada para Real Brasileiro (BRL)
+  final String selectedCurrency;
+
+  const MyApp({Key? key, required this.selectedCurrency}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

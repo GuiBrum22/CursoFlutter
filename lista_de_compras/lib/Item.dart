@@ -1,8 +1,15 @@
-class Item {
-  late final String name;
-  late final int quantity;
-  late final double price;
-  final String selectedCurrency; // Adicione este parâmetro
+import 'package:flutter/material.dart';
 
-  Item({required this.name, required this.quantity, required this.price, required this.selectedCurrency});
+class Item {
+  late String name;
+  late int quantity; // Removendo inicialização tardiamente
+  late double price;
+  late String selectedCurrency;
+
+  Item({
+    required this.name,
+    required this.quantity, // Removendo inicialização tardiamente
+    required this.price,
+    required this.selectedCurrency,
+  });
 }

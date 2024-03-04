@@ -4,12 +4,11 @@ import 'Item.dart';
 
 class ShoppingListView extends StatelessWidget {
   final ShoppingListController controller;
-  final String selectedCurrency;
 
   const ShoppingListView({
     Key? key,
     required this.controller,
-    required this.selectedCurrency,
+    required String selectedCurrency,
   }) : super(key: key);
 
   @override
@@ -17,19 +16,23 @@ class ShoppingListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Lista de Compras - Total: ${controller.calculateTotalPrice().toStringAsFixed(2)} $selectedCurrency'),
+          'Lista de Compras - Total: ${controller.calculateTotalPrice().toStringAsFixed(2)} USD',
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.sort_by_alpha),
-            onPressed: () => controller.sortList(SortOption.alphabetical),
+            onPressed: () =>
+                controller.sortList(SortOption.alphabetical),
           ),
           IconButton(
             icon: Icon(Icons.arrow_downward),
-            onPressed: () => controller.sortList(SortOption.priceLowToHigh),
+            onPressed: () =>
+                controller.sortList(SortOption.priceLowToHigh),
           ),
           IconButton(
             icon: Icon(Icons.arrow_upward),
-            onPressed: () => controller.sortList(SortOption.priceHighToLow),
+            onPressed: () =>
+                controller.sortList(SortOption.priceHighToLow),
           ),
         ],
       ),
@@ -52,10 +55,9 @@ class ShoppingListView extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '(${controller.convertPrice(item.price, selectedCurrency).toStringAsFixed(2)} $selectedCurrency)',
+                      '(${controller.convertPrice(item.price, 'BRL').toStringAsFixed(2)} BRL)',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    // Adicione outras moedas aqui, conforme necessário
                   ],
                 ),
               ],
@@ -66,29 +68,35 @@ class ShoppingListView extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
-                    controller.decrementItemQuantity(item.name);
+                    try {
+                      controller.decrementItemQuantity(item.name);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro ao remover item: $e'),
+                        ),
+                      );
+                    }
                   },
                 ),
+                Text('${item.quantity}'),
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
-                    controller.incrementItemQuantity(item.name);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    _editItemDialog(context, item);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    controller.removeItem(item.name);
+                    try {
+                      controller.incrementItemQuantity(item.name);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro ao adicionar item: $e'),
+                        ),
+                      );
+                    }
                   },
                 ),
               ],
             ),
+            onTap: () => _editItemDialog(context, item),
           );
         },
       ),
@@ -134,13 +142,19 @@ class ShoppingListView extends StatelessWidget {
                 if (_itemNameController.text.isNotEmpty &&
                     _quantityController.text.isNotEmpty &&
                     _priceController.text.isNotEmpty) {
-                  double price = double.parse(_priceController.text);
-                  controller.addItem(
-                      _itemNameController.text,
-                      int.parse(_quantityController.text),
-                      price,
-                      selectedCurrency);
-                  Navigator.of(context).pop();
+                  try {
+                    double price = double.parse(_priceController.text);
+                    int quantity = int.parse(_quantityController.text);
+                    controller.addItem(
+                        _itemNameController.text, quantity, price, 'BRL');
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro ao adicionar item: $e'),
+                      ),
+                    );
+                  }
                 }
               },
               child: Text('Adicionar'),
@@ -189,11 +203,21 @@ class ShoppingListView extends StatelessWidget {
                 if (_itemNameController.text.isNotEmpty &&
                     _quantityController.text.isNotEmpty &&
                     _priceController.text.isNotEmpty) {
-                  double price = double.parse(_priceController.text);
-                  controller.updateItemName(item.name, _itemNameController.text);
-                  controller.updateItemPrice(item.name, price);
-                  controller.updateItemQuantity(item.name, int.parse(_quantityController.text));
-                  Navigator.of(context).pop();
+                  try {
+                    double price = double.parse(_priceController.text);
+                    int quantity = int.parse(_quantityController.text);
+                    controller.updateItemName(
+                        item.name, _itemNameController.text);
+                    controller.updateItemPrice(item.name, price);
+                    controller.updateItemQuantity(item.name, quantity);
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro ao salvar alterações: $e'),
+                      ),
+                    );
+                  }
                 }
               },
               child: Text('Salvar'),
