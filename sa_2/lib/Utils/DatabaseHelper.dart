@@ -1,4 +1,4 @@
-import 'package:sa_2_guibrum/Model/User.dart'; // Importa a classe User
+ import 'package:sa_2_guibrum/Model/User.dart'; // Importa a classe User
 import 'package:sqflite/sqflite.dart'; // Importa o pacote sqflite para trabalhar com o SQLite
 import 'package:path/path.dart'; // Importa o pacote path para manipular caminhos de arquivos
 

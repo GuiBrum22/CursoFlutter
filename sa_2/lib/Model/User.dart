@@ -22,4 +22,5 @@ class User {
       password: map['password'],  // Atribuição do valor do mapa para o atributo password
     );
   }
+
 }

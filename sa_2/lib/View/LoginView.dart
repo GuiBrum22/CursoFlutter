@@ -1,12 +1,18 @@
-import 'package:flutter/material.dart'; // Importa o pacote Flutter Material
-import 'package:sa_2_guibrum/Repository/UserRepository.dart'; // Importa o repositório de usuários
-import 'package:sa_2_guibrum/View/RegisterView.dart'; // Importa a tela de registro
-import 'package:sa_2_guibrum/view/homeView.dart'; // Importa a tela inicial após o login
+import 'package:flutter/material.dart';
+import 'package:sa_2_guibrum/Repository/UserRepository.dart';
+import 'package:sa_2_guibrum/View/RegisterView.dart';
+import 'package:sa_2_guibrum/Utils/ShoppingListController.dart';
+import 'package:sa_2_guibrum/View/ShoppingListView.dart';
 
-class LoginView extends StatelessWidget {
-  final UserRepository userRepository = UserRepository(); // Instância do repositório de usuários
-  final TextEditingController _usernameController = TextEditingController(); // Controlador para o campo de usuário
-  final TextEditingController _passwordController = TextEditingController(); // Controlador para o campo de senha
+class LoginView extends StatefulWidget {
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final UserRepository userRepository = UserRepository();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,54 +29,60 @@ class LoginView extends StatelessWidget {
             children: [
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'), // Campo de entrada para o nome de usuário
+                decoration: InputDecoration(labelText: 'Username'),
               ),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'), // Campo de entrada para a senha
-                obscureText: true, // Oculta o texto da senha
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  final username = _usernameController.text.trim(); // Obtém o nome de usuário digitado
-                  final password = _passwordController.text.trim(); // Obtém a senha digitada
-                  final user = await userRepository.getUser(username, password); // Busca o usuário no repositório
+                  final username = _usernameController.text.trim();
+                  final password = _passwordController.text.trim();
 
-                  if (username == '' || password == '') { // Verifica se os campos estão vazios
+                  if (username.isEmpty || password.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Campos Vazios'),
                       ),
                     );
                   } else {
-                    if (user != null) { // Verifica se o usuário foi encontrado
+                    final user =
+                        await userRepository.getUser(username, password);
+                    if (user != null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomeView(user: user)), // Navega para a tela inicial após o login
+                          builder: (context) => ShoppingListView(
+                            controller: ShoppingListController(user),
+                            selectedCurrency:
+                                'USD', // Provide the required selectedCurrency argument
+                          ),
+                        ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content:
-                              Text('Credenciais incorretas. Tente novamente.'), // Exibe mensagem de credenciais incorretas
+                              Text('Credenciais incorretas. Tente novamente.'),
                         ),
                       );
                     }
                   }
                 },
-                child: Text('Login'), // Texto do botão de login
+                child: Text('Login'),
               ),
               SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterView()), // Navega para a tela de registro
+                    MaterialPageRoute(builder: (context) => RegisterView()),
                   );
                 },
-                child: Text('Registrar'), // Texto do botão de registro
+                child: Text('Registrar'),
               ),
             ],
           ),

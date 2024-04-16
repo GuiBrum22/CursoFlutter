@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'Lista de Compras', // Título do aplicativo
         theme: ThemeData(
           primarySwatch: Colors.blue, // Tema do aplicativo com a cor primária azul
-        ),
+        ),  
         home: Consumer<ShoppingListController>(
           // Consumidor para acessar o controlador da lista de compras
           builder: (context, controller, _) => ShoppingListView(
