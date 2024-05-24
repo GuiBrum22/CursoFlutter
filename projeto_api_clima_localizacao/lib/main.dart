@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_api_clima_localizacao/View/citydetail_screen.dart';
-
+import 'View/citydetail_screen.dart';
 import 'View/favorites_screen.dart';
 import 'View/home_screen.dart';
 import 'View/search_screen.dart';
