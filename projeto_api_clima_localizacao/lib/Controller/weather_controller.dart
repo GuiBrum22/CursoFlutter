@@ -6,22 +6,21 @@ class WeatherController {
   WeatherService _service = new WeatherService();
 
   //métodos
-  Future<void> getFromWeatherService(String city) async {
+  Future<void> getFromWeatherService(String city) async{
     Weather weather = Weather.fromJson(await _service.getWeather(city));
     listWeather.add(weather);
   }
 
-  Future<void> getFromWeatherServiceLocation(double lat, double lon) async {
-    Weather weather =
-        Weather.fromJson(await _service.getWeatherByLocation(lat, lon));
+  Future<void> getFromWeatherServiceLocation(double lat, double lon) async{
+    Weather weather = Weather.fromJson(await _service.getWeatherByLocation(lat,lon));
     listWeather.add(weather);
   }
 
-  Future<bool> findCity(String city) async {
+  Future<bool> findCity(String city) async{
     Weather weather = Weather.fromJson(await _service.getWeather(city));
-    if (weather.city.isNotEmpty) {
+    if(weather.city.isNotEmpty){
       return true;
-    } else {
+    }else{
       return false;
     }
   }
