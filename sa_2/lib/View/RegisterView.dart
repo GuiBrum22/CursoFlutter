@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart'; // Importa o pacote Flutter Material
-import 'package:sa_2_guibrum/Repository/UserRepository.dart'; // Importa o repositório de usuários
-import '../Model/User.dart'; // Importa a classe User
+import 'package:flutter/material.dart';
+import 'package:sa_2_guibrum/Repository/UserRepository.dart';
+import '../Model/User.dart';
 
 class RegisterView extends StatelessWidget {
-  final UserRepository userRepository = UserRepository(); // Instância do repositório de usuários
-  final TextEditingController _usernameController = TextEditingController(); // Controlador para o campo de usuário
-  final TextEditingController _passwordController = TextEditingController(); // Controlador para o campo de senha
+  final UserRepository userRepository = UserRepository();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro'), // Título da barra de aplicativo
+        title: Text('Registro'),
       ),
       body: Center(
         child: Padding(
@@ -22,35 +22,35 @@ class RegisterView extends StatelessWidget {
             children: [
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'), // Campo de entrada para o nome de usuário
+                decoration: InputDecoration(labelText: 'Username'),
               ),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'), // Campo de entrada para a senha
-                obscureText: true, // Oculta o texto da senha
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  final username = _usernameController.text.trim(); // Obtém o nome de usuário digitado
-                  final password = _passwordController.text.trim(); // Obtém a senha digitada
-                  final user = User(username: username, password: password); // Cria um novo usuário
-                  if (username == '' || password == '') { // Verifica se os campos estão vazios
+                  final username = _usernameController.text.trim();
+                  final password = _passwordController.text.trim();
+                  final user = User(username: username, password: password);
+                  if (username == '' || password == 0) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Campos Vazios'), // Exibe mensagem de campos vazios
+                        content: Text('Campos Vazios'),
                       ),
                     );
                   } else {
-                    await userRepository.addUser(user); // Adiciona o usuário ao repositório
+                    await userRepository.addUser(user);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content: Text('Cadastro realizado com sucesso!')), // Exibe mensagem de cadastro bem-sucedido
+                          content: Text('Cadastro realizado com sucesso!')),
                     );
-                    Navigator.pop(context); // Volta para a tela anterior
+                    Navigator.pop(context);
                   }
                 },
-                child: Text('Registrar'), // Texto do botão de registro
+                child: Text('Registrar'),
               ),
             ],
           ),

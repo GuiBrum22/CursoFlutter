@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sa_2_guibrum/Repository/UserRepository.dart';
 import 'package:sa_2_guibrum/View/RegisterView.dart';
-import 'package:sa_2_guibrum/Utils/ShoppingListController.dart';
-import 'package:sa_2_guibrum/View/ShoppingListView.dart';
+import 'package:sa_2_guibrum/view/homeView.dart';
 
-class LoginView extends StatefulWidget {
-  @override
-  _LoginViewState createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
+class LoginView extends StatelessWidget {
   final UserRepository userRepository = UserRepository();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -41,26 +35,19 @@ class _LoginViewState extends State<LoginView> {
                 onPressed: () async {
                   final username = _usernameController.text.trim();
                   final password = _passwordController.text.trim();
-
-                  if (username.isEmpty || password.isEmpty) {
+                  final user = await userRepository.getUser(username, password);
+                  if (username == '' || password == '') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Campos Vazios'),
                       ),
                     );
                   } else {
-                    final user =
-                        await userRepository.getUser(username, password);
                     if (user != null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShoppingListView(
-                            controller: ShoppingListController(user),
-                            selectedCurrency:
-                                'USD', // Provide the required selectedCurrency argument
-                          ),
-                        ),
+                            builder: (context) => HomeView(user: user)),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(

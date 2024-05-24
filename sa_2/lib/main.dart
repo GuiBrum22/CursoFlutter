@@ -1,20 +1,20 @@
-import 'package:flutter/material.dart'; // Importa o pacote Flutter Material
-import 'View/LoginView.dart'; // Importa a tela de login
+import 'package:flutter/material.dart';
+import 'View/LoginView.dart';
 
 void main() {
-  runApp(MyApp()); // Inicia a aplicação Flutter
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cadastro e Login', // Título do aplicativo
+      title: 'Cadastro e Login',
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Define a cor primária como azul
-        visualDensity: VisualDensity.adaptivePlatformDensity, // Define a densidade visual adaptativa
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginView(), // Define a tela inicial como LoginView
+      home: LoginView(),
     );
   }
 }

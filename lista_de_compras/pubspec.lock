@@ -184,6 +184,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+<<<<<<< HEAD
   path_provider_linux:
     dependency: transitive
     description:
@@ -224,6 +225,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+=======
+>>>>>>> 8cd09ca9cc465768daa9afda0b4d349a8dc9c6db
   provider:
     dependency: "direct main"
     description:
