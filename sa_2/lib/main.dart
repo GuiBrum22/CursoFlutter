@@ -3,7 +3,7 @@ import 'View/LoginView.dart';
 
 void main() {
   runApp(MyApp());
-}
+} 
 
 class MyApp extends StatelessWidget {
   @override
