@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart'; // Importação do pacote Flutter para widgets de interface do usuário
 import 'Item.dart'; // Importação da classe Item para representar os itens da lista
-import 'DatabaseHelper.dart'; // Importe a classe DatabaseHelper
-import 'PreferencesHelper.dart'; // Importe a classe PreferencesHelper
 
 // Enumeração para definir as opções de ordenação da lista de compras
 enum SortOption {
@@ -34,25 +32,22 @@ class ShoppingListController extends ChangeNotifier {
 
   // Método para adicionar um novo item à lista de compras
   void addItem(
-  String itemName,
-  int quantity,
-  double price, String s,
-) async {
-  // Obtenha a moeda selecionada das preferências
-  final selectedCurrency = await PreferencesHelper.getSelectedCurrency();
-
-  // Salve o item no banco de dados usando sqflite
-  await DatabaseHelper.insertItem({
-    'name': itemName,
-    'quantity': quantity,
-    'price': price,
-    'selectedCurrency': selectedCurrency ?? 'USD',
-    'bought': 0, // Por padrão, o item não é comprado
-  });
-
-  notifyListeners(); // Notifique os ouvintes sobre as mudanças na lista de compras
-}
-
+      String itemName, int quantity, double price, String selectedCurrency) {
+    bool itemExists = _shoppingList.any((item) => item.name == itemName);
+    if (!itemExists) {
+      _shoppingList.add(Item(
+          name: itemName,
+          quantity: quantity,
+          price: price,
+          selectedCurrency: selectedCurrency));
+    } else {
+      updateItemQuantity(
+          itemName,
+          _shoppingList.firstWhere((item) => item.name == itemName).quantity +
+              quantity);
+    }
+    notifyListeners(); // Notifica os ouvintes sobre as mudanças na lista de compras
+  }
 
   // Método para remover um item da lista de compras
   void removeItem(String itemName) {

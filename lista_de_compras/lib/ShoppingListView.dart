@@ -1,11 +1,11 @@
 // Importações necessárias
 import 'package:flutter/material.dart';
-import 'ShoppingListController.dart'; // Importação do controlador da lista de compras
-import 'Item.dart'; // Importação do modelo de Item
+import 'ShoppingListController.dart';
+import 'Item.dart';
 
 // Widget da tela da lista de compras
 class ShoppingListView extends StatelessWidget {
-  final ShoppingListController controller; // Controlador da lista de compras
+  final ShoppingListController controller;
 
   const ShoppingListView({
     Key? key,
