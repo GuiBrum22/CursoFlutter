@@ -1,9 +1,8 @@
-import 'package:exemplo_firebase/Screens/todolist_screen.dart';
 import 'package:exemplo_firebase/services/auth_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'todolist_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
