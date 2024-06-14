@@ -1,4 +1,5 @@
-import 'package:exemplo_firebase_b/controllers/todolist_controller.dart';
+import 'package:exemplo_firebase/controllers/todolist_controller.dart';
+import 'package:exemplo_firebase/model/todolist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -94,8 +95,15 @@ class _TodolistScreenState extends State<TodolistScreen> {
                   TextButton(
                     child: const Text('Confirmar'),
                     onPressed: (){
-                      _controller.addToFirestore();                                             );
+                      _controller.addToFirestore(
+                        Todolist(
+                          id: "", 
+                          titulo: _tituloController.text, 
+                          userId: widget.user.uid, 
+                          timestamp: DateTime.now())
+                      );                                             
                       Navigator.of(context).pop();
+                      setState(() {});
                     },
                   ),
                 ],
