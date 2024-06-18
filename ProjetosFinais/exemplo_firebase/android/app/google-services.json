@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659967170367",
+    "project_id": "exemplo-firebase-ezequielzz",
+    "storage_bucket": "exemplo-firebase-ezequielzz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659967170367:android:9b694e60fa3ddd41a1258a",
+        "android_client_info": {
+          "package_name": "br.com.ezequielzz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXEjZ70JcRWkWk0lJtuzsKXK5rGR1wbn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "84077076744",
+    "project_id": "teste-firebase-tardeb",
+    "storage_bucket": "teste-firebase-tardeb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84077076744:android:e02f96fd1809c1002fccbd",
+        "android_client_info": {
+          "package_name": "br.com.nicolas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjjWAwx85pnjhyeXWYAc6ztGTm_ySSRuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84077076744:android:6597a1c157ebbc4f2fccbd",
+        "android_client_info": {
+          "package_name": "br.com.nicolassouza"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjjWAwx85pnjhyeXWYAc6ztGTm_ySSRuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
